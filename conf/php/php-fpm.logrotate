@@ -1,0 +1,32 @@
+/var/log/php/*.log {
+    daily
+    rotate 30
+    ifempty
+    #compress
+    dateext
+    dateformat -%Y%m%d
+    missingok
+    nomail
+    noolddir
+    sharedscripts
+
+    postrotate
+        /etc/init.d/php-fpm restart
+        chown -R www.www /var/log/php/
+
+        YESTERDAY=$(/bin/date --date '1 days ago' +'%Y%m%d')
+        cd /var/log/php
+        LOG_FILE=$(ls -1 *.log-* | grep -v .tar.gz)
+
+        for I in $LOG_FILE;do
+            LOG_FILE_NAME=$(echo ${I} | awk -F '.log-' '{print $1}')
+            LOG_FULL_NAME=${LOG_FILE_NAME}.log-${YESTERDAY}
+            mv ${I} ${LOG_FULL_NAME}
+
+            /bin/tar czf ${LOG_FULL_NAME}.tar.gz ${LOG_FULL_NAME}
+            rm -f ${LOG_FULL_NAME}
+        done
+
+        /bin/find /var/log/php -mtime +30 | xargs rm -rf
+    endscript
+}

@@ -1,0 +1,227 @@
+#!/bin/bash
+
+# Debug
+#set -x
+#set -u
+#set -e
+#exec 1>${TOP_DIR}/stdout.log
+#exec 2>${TOP_DIR}/stderr.log
+
+# Version
+readonly VER='1.0.0'
+if [ $1 = '-v' ] 2>/dev/null;then
+    echo Moss7-${VER}
+    exit 0
+fi
+
+## Reboot Flag
+NEED_REBOOT=0
+
+## Global Readonly Variables
+## !!! DO NOT Modify These Settings !!!
+readonly TOP_DIR="$(cd $(dirname $0);pwd)"
+readonly DATE=$(date +%Y%m%d-%H-%M)
+readonly ARCH=$(uname -i)
+readonly OS_ISSUE=$(head -n 1 /etc/system-release | awk '{print $1}')
+readonly OS_VER=$(awk {'print $4'} /etc/system-release | cut -d '.' -f 1)
+readonly STORE_DIR="${TOP_DIR}/src"
+readonly INST_LOG="/var/log/moss.log"
+readonly CHECK_MD5=1
+readonly PATH='/usr/bin:/bin:/usr/sbin:/sbin'
+
+## Shell Environment
+export PATH
+alias cp='cp'
+alias mv='mv'
+alias rm='rm'
+alias grep='grep --color'
+
+## Include common functions
+source ${TOP_DIR}/common/functions.sh
+
+## Check Privilege
+[ $(id -u) -ne 0 ] && fail_msg "You must be root!"
+
+## Check Architecture
+[ "$ARCH" != 'x86_64' ] && fail_msg "Moss7 didn't support $ARCH, please install x86_64!"
+
+## Check OS
+[ "${OS_ISSUE}" != 'CentOS' ] && fail_msg "Moss7 can be installed on CentOS release only!\nYour release is ${OS_ISSUE}"
+[ "${OS_VER}" -ne 7 ] && fail_msg "Moss7 could run on CentOS 7 only!\nYour release is ${OS_ISSUE}"
+
+## Check Moss7 Configuration File
+if [ ! -f "${TOP_DIR}/etc/moss.conf" ];then
+    fail_msg "${TOP_DIR}/etc/moss.conf is not found!"
+fi
+
+## Weclcome
+clear
+cat ${TOP_DIR}/etc/banner
+succ_msg "Welcome to Moss7 ${VER}\n"
+succ_msg "Moss7 ia a Linux WEB application environment deployment system."
+succ_msg "You need to edit ${TOP_DIR}/etc/moss.conf to modify some settings.\n"
+succ_msg "Author: Nanu"
+succ_msg "Contact: nanu@inanu.net\n"
+
+## Moss7 Options
+warn_msg "Please Select Moss7 Installation Option "
+warn_msg "================================================"
+warn_msg "1 - Initial & optimize CentOS system only;"
+warn_msg "2 - Install Nginx web server standalone;"
+warn_msg "3 - Install Nginx web server and PHP FastCGI;"
+warn_msg "4 - Install MySQL database server;"
+warn_msg "5 - Install Redis NoSQL database;"
+warn_msg "6 - Install Zabbix agent;"
+warn_msg "u - Uninstall Moss7;"
+warn_msg "q - Quit Installation;"
+warn_msg "================================================\n"
+MOSS_OPT=1
+read -p "Select an Install Option:" MOSS_OPT
+
+## Import Moss7 Settings
+source ${TOP_DIR}/etc/moss.conf 2>/dev/null
+
+## Import Hardware Information
+source ${TOP_DIR}/common/hwinfo.sh 2>/dev/null
+
+## Check Install Directory
+[ ! -d ${INST_DIR} ] && mkdir -m 0755 -p ${INST_DIR}
+
+## Check Moss7 log file
+[ ! -f ${INST_LOG} ] && touch ${INST_LOG}
+chmod 600 ${INST_LOG}
+
+## Check Moss7 security Directory
+[ ! -d '/root/.moss' ] && mkdir -m 0700 -p /root/.moss
+
+## Check wget command
+if ! grep '^YUM_WGET' ${INST_LOG} > /dev/null 2>&1 ;then
+    yum install -y wget || fail_msg "Install wget Failed!"
+    ## log installed tag
+    echo 'YUM_WGET' >> ${INST_LOG}
+fi
+
+## Install development libs
+install_rpm () {
+    source ${TOP_DIR}/common/install_rpm.sh
+}
+
+## Config System
+sysconfig () {
+    source ${TOP_DIR}/common/root.pub.sh
+    source ${TOP_DIR}/common/config_sys.sh
+}
+
+## Build development library
+install_libs () {
+    echo ''
+}
+
+## Nginx
+web () {
+    source ${TOP_DIR}/compile/nginx.sh
+}
+
+### PHP
+php () {
+    source ${TOP_DIR}/compile/php.sh
+    if [ $ISREDIS -eq 1 ];then
+        source ${TOP_DIR}/compile/pecl_redis.sh
+    fi
+}
+
+## MySQL
+db () {
+    source ${TOP_DIR}/compile/mysql.sh
+    source ${TOP_DIR}/compile/percona-xtrabackup.sh
+}
+
+## NoSQL
+nosql () {
+    source ${TOP_DIR}/compile/redis.sh
+}
+
+## Zabbix Agent
+zagent () {
+    source ${TOP_DIR}/compile/zabbix_agent.sh
+}
+
+## Uninstall
+uninstall () {
+    source ${TOP_DIR}/common/uninstall.sh
+}
+
+case "${MOSS_OPT}" in
+    1) # Init
+        install_rpm
+        sysconfig
+        ;;
+    2) # WEB Server Only
+        get_pkginfo
+        install_rpm
+        sysconfig
+        web
+        ;;
+    3) # WEB + PHP
+        get_pkginfo
+        install_rpm
+        sysconfig
+        install_libs
+        web
+        php
+        ;;
+    4) # MySQL
+        get_pkginfo
+        install_rpm
+        sysconfig
+        db
+        ;;
+    5) # NoSQL
+        get_pkginfo
+        install_rpm
+        sysconfig
+        nosql 
+        ;;
+    6) # Zabbix Agent
+        [ -z ${ZABBIX_SERVER_IP} ] && fail_msg "You MUST set ZABBIX_SERVER_IP in ${TOP_DIR}/etc/moss.conf!"
+        get_pkginfo
+        install_rpm
+        sysconfig
+        zagent
+        ;;
+    u) # Uninstall
+        uninstall
+        ;;
+    q) # Quit
+        exit 0
+        ;;
+    *) # Invalid
+       fail_msg "You specifid an invalid option!\n"
+    ;;
+esac
+
+if [ ${MOSS_OPT} = 'u' ];then
+    succ_msg '==================================='
+    succ_msg '= Moss7 Uninstalled Successfully! ='
+    succ_msg '==================================='
+else
+    warn_msg '*DO NOT* delete Moss7 installation directory!'
+    warn_msg 'Otherwise, you will not be able to uninstall!'
+    warn_msg 'or UPDATE Moss7 in the future!'
+    succ_msg '================================='
+    succ_msg '= Moss7 Installed Successfully! ='
+    succ_msg '================================='
+fi
+
+if [ ${NEED_REBOOT} -eq 1 2>/dev/null ];then
+    warn_msg 'System needs reboot to apply changes.'
+    y_or_n 'Reboot Now?' 'y'
+    REBOOT_SYS=${USER_INPUT}
+    if [ "${REBOOT_SYS}" = 'y' ];then
+        init 6
+    fi
+fi
+
+## Close I/O redirection
+#exec 1>&-
+#exec 2>&-

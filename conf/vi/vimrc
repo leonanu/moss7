@@ -1,0 +1,13 @@
+
+" Moss vimrc - START
+syntax on
+set background=dark
+set showcmd
+set nobackup
+set ts=4
+set tabstop=4
+set shiftwidth=4 
+set paste
+set laststatus=2
+set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%l/%L,%v][%p%%]
+" Moss vimrc - END
