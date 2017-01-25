@@ -53,6 +53,9 @@ gnupg2
 graphviz
 iftop
 iotop
+iptables
+iptables-services
+iptables-utils
 iptraf-ng
 lftp
 libaio-devel
