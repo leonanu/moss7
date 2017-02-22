@@ -2,6 +2,8 @@
 
 ## install EPEL repo
 if ! grep '^ADD_EPEL' ${INST_LOG} > /dev/null 2>&1 ;then
+    rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+    mv /etc/yum.repos.d/epel.repo /etc/yum.repos.d/epel.repo.ori
     install -m 0644 ${TOP_DIR}/conf/yum/epel.repo /etc/yum.repos.d/epel.repo
     yum clean all
     ## log installed tag
@@ -26,6 +28,7 @@ binutils
 bison
 blktrace
 byacc
+bzip2
 bzip2-devel
 c-ares
 c-ares-devel
@@ -60,6 +63,7 @@ iptraf-ng
 lftp
 libaio-devel
 libcurl
+libcurl-devel
 libjpeg-turbo-devel
 libmcrypt-devel
 libnl-devel
@@ -82,10 +86,13 @@ man-pages
 man-pages-overrides
 mlocate
 mtr
+net-tools
 nscd
 ntp
 ntpdate
 ntsysv
+openldap
+openldap-devel
 openjpeg-devel
 openjpeg-devel.i686
 openssh-clients
@@ -118,6 +125,7 @@ vim-common
 vim-enhanced
 wget
 which
+whois
 xz-devel
 yum-plugin-priorities
 zip

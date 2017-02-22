@@ -107,11 +107,11 @@ if ! grep '^NGINX$' ${INST_LOG} > /dev/null 2>&1 ;then
     ## create certs
     /usr/local/bin/ca.sh
     ## init scripts
-    install -m 0755 ${TOP_DIR}/conf/nginx/nginx.init /etc/init.d/nginx
-    chkconfig --add nginx
-    chkconfig --level 35 nginx on
+    install -m 0644 ${TOP_DIR}/conf/nginx/nginx.service /usr/lib/systemd/system/nginx.service
+    systemctl daemon-reload
+    systemctl enable nginx.service
     ## start
-    service nginx start
+    systemctl start nginx.service
     sleep 3
 
 ## check proc

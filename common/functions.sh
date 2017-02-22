@@ -161,7 +161,7 @@ compile(){
     [ -n "$CPPFLAGS" ] && export CPPFLAGS
 
     if [ -n "${PRE_CONFIG}" ];then
-        succ_msg "Begin to pre_config ${SRC_DIR} ......"
+        succ_msg "Begin to pre-config ${SRC_DIR} ......"
         sleep 3
         eval ${PRE_CONFIG}  && succ_msg "Success to pre-config ${SRC_DIR}" || fail_msg "Failed to pre-config ${SRC_DIR}"
     fi
@@ -170,6 +170,12 @@ compile(){
         succ_msg "Begin to configure ${SRC_DIR} ......"
         sleep 3
         eval $CONFIG && succ_msg "Success to configure ${SRC_DIR}" || fail_msg "Failed to configure ${SRC_DIR}"
+    fi
+
+    if [ -n "${POST_CONFIG}" ];then
+        succ_msg "Begin to post-config ${SRC_DIR} ......"
+        sleep 3
+        eval ${POST_CONFIG}  && succ_msg "Success to post-config ${SRC_DIR}" || fail_msg "Failed to post-config ${SRC_DIR}"
     fi
 
     if [ -n "$MAKE" ];then

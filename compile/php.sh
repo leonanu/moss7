@@ -12,8 +12,8 @@ if ! grep '^PHP$' ${INST_LOG} > /dev/null 2>&1 ;then
     get_file
     unpack
 
-    # fix openldap libs link
-    cp -frp /usr/lib64/libldap* /usr/lib/
+## fix ldap libs link
+    PRE_CONFIG='cp -frp /usr/lib64/libldap* /usr/lib/'
 
     CONFIG="./configure \
             --prefix=${INST_DIR}/${SRC_DIR} \
@@ -58,6 +58,8 @@ if ! grep '^PHP$' ${INST_LOG} > /dev/null 2>&1 ;then
             --disable-phar \
             --disable-rpath"
 
+## fix ldap lber link
+    POST_CONFIG='sed -i "/^EXTRA_LIBS =.*$/s//& -llber/" ${STORE_DIR}/${SRC_DIR}/Makefile'
 
 ## for compile
     MAKE='make'
@@ -93,11 +95,11 @@ if ! grep '^PHP$' ${INST_LOG} > /dev/null 2>&1 ;then
         ## security
         #sed -i "s#^open_basedir.*#open_basedir = "${NGX_DOCROOT},/tmp"#" /usr/local/php/etc/php.ini
         ## init scripts
-        install -m 0755 ${TOP_DIR}/conf/php/php-fpm.init /etc/init.d/php-fpm
-        chkconfig --add php-fpm
-        chkconfig --level 35 php-fpm on
+        install -m 0644 ${TOP_DIR}/conf/php/php-fpm.service /usr/lib/systemd/system/php-fpm.service
+        systemctl daemon-reload
+        systemctl enable php-fpm.service
         ## start
-        service php-fpm start
+        systemctl start php-fpm.service
         sleep 3
 
 ## check proc

@@ -1,0 +1,19 @@
+[Unit]
+Description=Nginx Server
+Documentation=http://nginx.org/en/docs/
+After=syslog.target network.target
+Wants=network.target
+
+[Service]
+Type=forking
+PIDFile=/var/run/nginx.pid
+ExecStartPre=/usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf -t
+ExecStart=/usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf
+ExecStop=/bin/kill -s TERM $MAINPID
+ExecReload=/bin/kill -s HUP $MAINPID
+KillMode=control-group
+Restart=no
+TimeoutSec=10
+
+[Install]
+WantedBy=multi-user.target

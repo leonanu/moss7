@@ -1,0 +1,19 @@
+[Unit]
+Description=PHP-FPM
+Documentation=http://php.net/docs.php
+After=syslog.target network.target
+Wants=network.target
+
+[Service]
+Type=forking
+PIDFile=/var/run/php-fpm.pid
+ExecStartPre=/usr/local/php/sbin/php-fpm --fpm-config /usr/local/php/etc/php-fpm.conf -t
+ExecStart=/usr/local/php/sbin/php-fpm --fpm-config /usr/local/php/etc/php-fpm.conf
+ExecStop=/bin/kill -s TERM $MAINPID
+ExecReload=/bin/kill -s HUP $MAINPID
+KillMode=control-group
+Restart=no
+TimeoutSec=10
+
+[Install]
+WantedBy=multi-user.target

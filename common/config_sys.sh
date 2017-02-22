@@ -245,5 +245,4 @@ if ! grep '^SYS_SERVICE' ${INST_LOG} > /dev/null 2>&1 ;then
     done
     ## log installed tag
     echo 'SYS_SERVICE' >> ${INST_LOG}
-    NEED_REBOOT=1
 fi
