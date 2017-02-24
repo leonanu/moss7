@@ -1,0 +1,17 @@
+[Unit]
+Description=Redis Datastore Server
+Documentation=https://redis.io/documentation
+After=syslog.target network.target
+Wants=network.target
+
+[Service]
+User=redis
+Type=forking
+PIDFile=/tmp/redis.pid
+ExecStart=/usr/local/redis/bin/redis-server /usr/local/redis/etc/redis.conf
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=no
+TimeoutSec=10
+
+[Install]
+WantedBy=multi-user.target

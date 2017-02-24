@@ -28,7 +28,7 @@ if ! grep '^REDIS$' ${INST_LOG} > /dev/null 2>&1 ;then
     chmod 600 /root/.moss/redis.pass
     succ_msg "Begin to install ${SRC_DIR} config files"
     ## user add
-    id redis >/dev/null 2>&1 || useradd redis -u 1003 -M -s /sbin/nologin -d ${RDS_DATA_DIR}
+    id redis >/dev/null 2>&1 || useradd redis -u 1003 -M -s /sbin/nologin
     ## data dir
     [ ! -d ${RDS_DATA_DIR} ] && mkdir -m 0755 -p ${RDS_DATA_DIR}
     chown redis:redis -R ${RDS_DATA_DIR}
@@ -62,13 +62,14 @@ if ! grep '^REDIS$' ${INST_LOG} > /dev/null 2>&1 ;then
     ## THP
     echo never > /sys/kernel/mm/transparent_hugepage/enabled
     echo 'echo never > /sys/kernel/mm/transparent_hugepage/enabled' >> /etc/rc.local
+    ## base dir
+    chown redis:redis -R ${INST_DIR}/${SRC_DIR}
     ## init scripts
-    install -m 0700 ${TOP_DIR}/conf/redis/redis.init /etc/init.d/redis
-    sed -i "s#REDISPASS=.*#REDISPASS=${RDS_PASS}#" /etc/init.d/redis
-    chkconfig --add redis
-    chkconfig --level 35 redis on
+    install -m 0644 ${TOP_DIR}/conf/redis/redis.service /usr/lib/systemd/system/redis.service
+    systemctl daemon-reload
+    systemctl enable redis.service
     ## start
-    service redis start
+    systemctl start redis.service
     sleep 3
     unset SYMLINK
 
