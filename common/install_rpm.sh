@@ -54,7 +54,6 @@ gmp
 gmp-devel
 gnupg2
 graphviz
-iftop
 iotop
 iptables
 iptables-services
