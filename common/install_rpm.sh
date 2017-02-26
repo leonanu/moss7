@@ -83,6 +83,7 @@ make
 man-db
 man-pages
 man-pages-overrides
+expect
 mlocate
 mtr
 net-tools
