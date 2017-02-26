@@ -194,16 +194,6 @@ if ! grep '^PROFILE' ${INST_LOG} > /dev/null 2>&1 ;then
     echo 'PROFILE' >> ${INST_LOG}
 fi
 
-## ipv6
-if ! grep '^NO_IPV6' ${INST_LOG} > /dev/null 2>&1 ;then
-    if [ ${IPV6_OFF} -eq 1 2>/dev/null ]; then
-        cat ${TOP_DIR}/conf/sysctl/no_ipv6.conf >> /etc/sysctl.conf
-    fi
-    ## log installed tag
-    echo 'NO_IPV6' >> ${INST_LOG}
-    NEED_REBOOT=1
-fi
-    
 ## sysctl
 if ! grep '^SYSCTL' ${INST_LOG} > /dev/null 2>&1 ;then
     if ! grep 'Moss sysctl' /etc/sysctl.conf > /dev/null 2>&1 ;then
@@ -212,6 +202,16 @@ if ! grep '^SYSCTL' ${INST_LOG} > /dev/null 2>&1 ;then
     fi
     ## log installed tag
     echo 'SYSCTL' >> ${INST_LOG}
+    NEED_REBOOT=1
+fi
+
+## ipv6
+if ! grep '^NO_IPV6' ${INST_LOG} > /dev/null 2>&1 ;then
+    if [ ${IPV6_OFF} -eq 1 2>/dev/null ]; then
+        cat ${TOP_DIR}/conf/sysctl/no_ipv6.conf >> /etc/sysctl.conf
+    fi
+    ## log installed tag
+    echo 'NO_IPV6' >> ${INST_LOG}
     NEED_REBOOT=1
 fi
 
