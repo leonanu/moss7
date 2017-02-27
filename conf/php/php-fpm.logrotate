@@ -11,7 +11,7 @@
     sharedscripts
 
     postrotate
-        /etc/init.d/php-fpm restart
+        systemctl restart php-fpm.service
         chown -R www.www /var/log/php/
 
         YESTERDAY=$(/bin/date --date '1 days ago' +'%Y%m%d')

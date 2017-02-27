@@ -11,11 +11,11 @@
     sharedscripts
 
     prerotate
-        /etc/init.d/nginx reload
+        systemctl reload nginx.service
     endscript
 
     postrotate
-        /etc/init.d/nginx reload
+        systemctl reload nginx.service
         chown -R www.www /var/log/nginx/
 
         YESTERDAY=$(/bin/date --date '1 days ago' +'%Y%m%d')
