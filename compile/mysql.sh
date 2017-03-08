@@ -1,5 +1,5 @@
 #!/bin/bash
-#### mysql-5.6.x
+#### MariaDB 10.1.X
 if ! grep '^MYSQL$' ${INST_LOG} > /dev/null 2>&1 ; then
 
 ## check proc
