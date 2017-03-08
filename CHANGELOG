@@ -6,7 +6,14 @@ Moss7 Changelog
 -   Feature remove;
 
 
+Note:
+1. MariaDB(MySQL) and Zabbix agent serives are still controled
+   by SystemV. To control the two services:
+   # service start|stop|restart mysqld
+   # service start|stop|restart zabbix_agentd
+
+
 1.0.0
 =====
-2017-MM-DD
+2017-03-08
 ! Initial release;
