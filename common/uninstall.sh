@@ -20,7 +20,7 @@ if grep '^REDIS$' ${INST_LOG} > /dev/null 2>&1 ; then
         BAK_REDIS_DATA=${USER_INPUT}
 
         warn_msg "Stop Redis..."
-        /etc/init.d/redis stop
+        systemctl stop redis.service
         sleep 3
         if (pstree | grep redis > /dev/null 2>&1) ; then
             fail_msg "Redis Fail to Stop!"
@@ -40,8 +40,8 @@ if grep '^REDIS$' ${INST_LOG} > /dev/null 2>&1 ; then
 
         rm -rf /var/log/redis
 
-        chkconfig --del redis
-        rm -f /etc/init.d/redis
+        systemctl disable redis.service
+        rm -f /usr/lib/systemd/system/redis.service
 
         userdel -r redis 2>/dev/null
 
@@ -144,7 +144,7 @@ if grep '^NGINX$' ${INST_LOG} > /dev/null 2>&1 ; then
         BAK_NGINX_LOG=${USER_INPUT}
 
         warn_msg "Stop Nginx..."
-        /etc/init.d/nginx stop
+        systemctl stop nginx.service
         sleep 3
         if (pstree | grep nginx > /dev/null 2>&1) ; then
             fail_msg "Nginx Fail to Stop!"
@@ -172,8 +172,8 @@ if grep '^NGINX$' ${INST_LOG} > /dev/null 2>&1 ; then
             warn_msg "Nginx logs keeped in ${NGX_LOGDIR}"
         fi
 
-        chkconfig --del nginx
-        rm -f /etc/init.d/nginx
+        systemctl disable nginx.service
+        rm -f /usr/lib/systemd/system/nginx.service
 
         if (pstree | grep php-fpm > /dev/null 2>&1) ; then
             warn_msg "User www is used by PHP-FPM now."
@@ -202,7 +202,7 @@ if grep '^PHP$' ${INST_LOG} > /dev/null 2>&1 ; then
         BAK_PHP_LOG=${USER_INPUT}
 
         warn_msg "Stop PHP-FPM..."
-        /etc/init.d/php-fpm stop
+        systemctl stop php-fpm.service
         sleep 3
         if (pstree | grep php-fpm > /dev/null 2>&1) ; then
             fail_msg "PHP-FPM Fail to Stop!"
@@ -222,8 +222,8 @@ if grep '^PHP$' ${INST_LOG} > /dev/null 2>&1 ; then
             warn_msg "PHP logs keeped in /var/log/php"
         fi
 
-        chkconfig --del php-fpm
-        rm -f /etc/init.d/php-fpm
+        systemctl disable php-fpm.service
+        rm -f /usr/lib/systemd/system/php-fpm.service
 
         if (pstree | grep nginx > /dev/null 2>&1) ; then
             warn_msg "User www is used by Nginx now."
