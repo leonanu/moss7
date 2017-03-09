@@ -14,7 +14,7 @@ if ! grep '^MYSQL$' ${INST_LOG} > /dev/null 2>&1 ; then
     unpack
 
     SYMLINK='/usr/local/mysql'
-    SERVER_ID=$(ip -f inet addr show dev ${NIC_WAN}|awk '$1~/inet/{print $2}'|cut -d/ -f1|cut -d. -f3,4|tr -d .)
+    SERVER_ID=$(ls /etc/sysconfig/network-scripts | grep ifcfg-eno -m 1 | awk -F 'ifcfg-eno' '{print $2}')
 
     mv ${STORE_DIR}/${SRC_DIR} ${INST_DIR}
     ln -sf ${INST_DIR}/${SRC_DIR} $SYMLINK 
