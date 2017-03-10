@@ -13,14 +13,15 @@ Note:
    # service start|stop|restart zabbix_agentd
 
 
-1.0.0
-=====
-2017-03-08
-! Initial release;
-
-
 1.0.1
 =====
 2017-MM-DD
 * Fix uninstall script to compatible with systemd;
 * Fix can no generate MariaDB server_id for my.cnf;
+* Update package_md5.sh;
+
+
+1.0.0
+=====
+2017-03-08
+! Initial release;
