@@ -16,6 +16,7 @@ Note:
 1.0.1
 =====
 2017-MM-DD
+* todo: Allow change NICs name from enoXXXX to traditional ethX;
 * Fix uninstall script to compatible with systemd;
 * Fix can not generate MariaDB server_id for my.cnf;
 * Update package_md5.sh;
