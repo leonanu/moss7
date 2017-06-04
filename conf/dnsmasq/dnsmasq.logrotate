@@ -1,0 +1,37 @@
+/data/logs/dnsmasq/*.log {
+    daily
+    rotate 30
+    ifempty
+    #compress
+    dateext
+    dateformat -%Y%m%d
+    missingok
+    nomail
+    noolddir
+    sharedscripts
+
+    #prerotate
+    #    systemctl reload dnsmasq.service
+    #endscript
+
+    postrotate
+        systemctl restart dnsmasq.service
+        chown -R nobody.root /data/logs/dnsmasq
+        chmod 640 /data/logs/dnsmasq/*
+
+        YESTERDAY=$(/bin/date --date '1 days ago' +'%Y%m%d')
+        cd /data/logs/dnsmasq
+        LOG_FILE=$(ls -1 *.log-* | grep -v .tar.gz)
+
+        for I in ${LOG_FILE};do
+            LOG_FILE_NAME=$(echo ${I} | awk -F '.log-' '{print $1}')
+            LOG_FULL_NAME=${LOG_FILE_NAME}.log-${YESTERDAY}
+            mv ${I} ${LOG_FULL_NAME}
+
+            /bin/tar czf ${LOG_FULL_NAME}.tar.gz ${LOG_FULL_NAME}
+            rm -f ${LOG_FULL_NAME}
+        done
+
+        /bin/find /data/logs/dnsmasq/ -mtime +7 | xargs rm -rf
+    endscript
+}

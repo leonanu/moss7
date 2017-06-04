@@ -17,6 +17,7 @@ Note:
 =====
 2017-MM-DD
 + todo: Add change_nic_name.sh to change NICs name from enoXXX to ethX;
++ Add DNSMasq configuration files;
 * Fix uninstall script to compatible with systemd;
 * Fix can not generate MariaDB server_id for my.cnf;
 * Update package_md5.sh;
