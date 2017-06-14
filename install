@@ -90,6 +90,9 @@ source ${TOP_DIR}/common/hwinfo.sh 2>/dev/null
 ## Check Moss7 log file
 [ ! -f ${INST_LOG} ] && touch ${INST_LOG}
 chmod 600 ${INST_LOG}
+echo "Moss Version: ${VER}" >> ${INST_LOG}
+echo "Install Date: ${DATE}" >> ${INST_LOG}
+echo '' >> ${INST_LOG}
 
 ## Check Moss7 security Directory
 [ ! -d '/root/.moss' ] && mkdir -m 0700 -p /root/.moss
