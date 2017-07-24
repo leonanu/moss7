@@ -246,3 +246,12 @@ if ! grep '^SYS_SERVICE' ${INST_LOG} > /dev/null 2>&1 ;then
     ## log installed tag
     echo 'SYS_SERVICE' >> ${INST_LOG}
 fi
+
+## enable rc-local service
+if ! grep '^RC-LOCAL' ${INST_LOG} > /dev/null 2>&1 ;then
+    chmod 755 /etc/rc.d/rc.local
+    systemctl enable rc-local.service
+    systemctl start rc-local.service
+    ## log installed tag
+    echo 'RC-LOCAL' >> ${INST_LOG}
+fi
