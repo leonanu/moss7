@@ -23,7 +23,7 @@ if ! grep '^NGINX$' ${INST_LOG} > /dev/null 2>&1 ;then
     --http-client-body-temp-path=/usr/local/nginx/var/tmp/client_body \
     --http-proxy-temp-path=/usr/local/nginx/var/tmp/proxy \
     --http-fastcgi-temp-path=/usr/local/nginx/var/tmp/fastcgi \
-    --http-uwsgi-temp-path=/var/tmp/nginx/uwsgi \
+    --http-uwsgi-temp-path=/usr/local/nginx/var/tmp/uwsgi \
     --with-threads \
     --with-file-aio \
     --with-http_ssl_module \
