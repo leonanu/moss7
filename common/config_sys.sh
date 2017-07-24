@@ -234,12 +234,12 @@ fi
 
 ## system service
 if ! grep '^SYS_SERVICE' ${INST_LOG} > /dev/null 2>&1 ;then
-    for SVC_ON in atd.service auditd.service chronyd.service crond.service dbus.service irqbalance.service network.service NetworkManager.service nscd.service sshd.service rsyslog.service;do
+    for SVC_ON in atd.service auditd.service chronyd.service crond.service dbus.service irqbalance.service network.service nscd.service sshd.service rsyslog.service;do
         systemctl enable ${SVC_ON} 2>/dev/null
         systemctl start ${SVC_ON} 2>/dev/null
     done
 
-    for SVC_OFF in firewalld.service iptables.service ip6tables.service;do
+    for SVC_OFF in NetworkManager.service firewalld.service iptables.service ip6tables.service;do
         systemctl disable ${SVC_OFF} 2>/dev/null
         systemctl stop  ${SVC_OFF} stop 2>/dev/null
     done
