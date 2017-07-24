@@ -20,6 +20,7 @@ Note:
 * rc-local service was enabled by default(/etc/rc.local worked);
 * Fix uninstall script to compatible with systemd;
 * Fix can not generate MariaDB server_id for my.cnf;
+* Fix Nginx would fail to start after system reboot(tmp dirs disappear);
 * Update package_md5.sh;
 
 
