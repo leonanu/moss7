@@ -64,6 +64,15 @@ if ! grep '^SET_VIMRC' ${INST_LOG} > /dev/null 2>&1 ;then
     ## log installed tag
     echo 'SET_VIMRC' >> ${INST_LOG}
 fi
+
+## disable cron mail
+if ! grep '^CRON_MAIL' ${INST_LOG} > /dev/null 2>&1 ;then
+    if ! grep 'MAILTO' /var/spool/cron/root > /dev/null 2>&1 ;then
+        echo 'MAILTO=""' >> /var/spool/cron/root
+    fi
+    ## log installed tag
+    echo 'CRON_MAIL' >> ${INST_LOG}
+fi
     
 ## set root password
 if [ ! -z "${OS_ROOT_PASSWD}" ];then
