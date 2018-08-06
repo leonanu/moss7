@@ -15,11 +15,23 @@ if ! grep '^SET_HOSTNAME' ${INST_LOG} > /dev/null 2>&1 ;then
 fi
 
 # optimize /etc/resolv.conf
+#if ! grep '^SET_RESOLV' ${INST_LOG} > /dev/null 2>&1 ;then
+#    if ! grep 'dns=none' /etc/NetworkManager/NetworkManager.conf > /dev/null 2>&1 ;then
+#        sed -i '/\[main\]/a\\dns=none' /etc/NetworkManager/NetworkManager.conf
+#    fi
+#    systemctl restart NetworkManager.service
+#    if ! grep 'timeout' /etc/resolv.conf > /dev/null 2>&1 ;then
+#        sed -i '1i\options timeout:1 attempts:1 rotate' /etc/resolv.conf
+#    fi
+#    systemctl restart NetworkManager.service
+#    ## log installed tag
+#    echo 'SET_RESOLV' >> ${INST_LOG}
+#fi
+
+# disable NetworkManager and optimize /etc/resolv.conf
 if ! grep '^SET_RESOLV' ${INST_LOG} > /dev/null 2>&1 ;then
-    if ! grep 'dns=none' /etc/NetworkManager/NetworkManager.conf > /dev/null 2>&1 ;then
-        sed -i '/\[main\]/a\\dns=none' /etc/NetworkManager/NetworkManager.conf
-    fi
-    systemctl restart NetworkManager.service
+    systemctl stop NetworkManager.service
+    systemctl disable NetworkManager.service
     if ! grep 'timeout' /etc/resolv.conf > /dev/null 2>&1 ;then
         sed -i '1i\options timeout:1 attempts:1 rotate' /etc/resolv.conf
     fi
