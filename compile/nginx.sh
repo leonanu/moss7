@@ -74,8 +74,8 @@ if ! grep '^NGINX$' ${INST_LOG} > /dev/null 2>&1 ;then
     install -m 0644 ${TOP_DIR}/conf/nginx/vhost.conf ${INST_DIR}/${SRC_DIR}/conf/vhosts/${NGX_HOSTNAME}.conf
     sed -i "s#.*ng_server_name.*#    server_name  ${NGX_HOSTNAME};#" ${INST_DIR}/${SRC_DIR}/conf/vhosts/${NGX_HOSTNAME}.conf
     sed -i "s#.*ng_root.*#    root         ${NGX_DOCROOT};#" ${INST_DIR}/${SRC_DIR}/conf/vhosts/${NGX_HOSTNAME}.conf
-    sed -i "s#.*ng_access_log.*#    access_log  ${NGX_LOGDIR}/access.log main buffer=4k;#" ${INST_DIR}/${SRC_DIR}/conf/vhosts/${NGX_HOSTNAME}.conf
-    sed -i "s#.*ng_error_log.*#    error_log   ${NGX_LOGDIR}/error.log error;#" ${INST_DIR}/${SRC_DIR}/conf/vhosts/${NGX_HOSTNAME}.conf
+    sed -i "s#.*ng_access_log.*#    access_log  ${NGX_LOGDIR}/${NGX_HOSTNAME}_access.log main buffer=4k;#" ${INST_DIR}/${SRC_DIR}/conf/vhosts/${NGX_HOSTNAME}.conf
+    sed -i "s#.*ng_error_log.*#    error_log   ${NGX_LOGDIR}/${NGX_HOSTNAME}_error.log error;#" ${INST_DIR}/${SRC_DIR}/conf/vhosts/${NGX_HOSTNAME}.conf
     ## Vim syntax hilight
     VIM_SHARE_DIR=$(ls /usr/share/vim | grep 'vim7')
     [ ! -d "/usr/share/vim/${VIM_SHARE_DIR}/ftdetect" ] && mkdir -m 0755 -p /usr/share/vim/${VIM_SHARE_DIR}/ftdetect
