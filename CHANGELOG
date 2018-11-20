@@ -15,9 +15,10 @@ Note:
 
 1.0.1
 =====
-2017-MM-DD
+2018-MM-DD
 * NetworkManager service was disabled by default;
 * rc-local service was enabled by default(/etc/rc.local worked);
+* Optimize Nginx & PHP-FPM performance;
 * Fix uninstall script to compatible with systemd;
 * Fix can not generate MariaDB server_id for my.cnf;
 * Fix Nginx would fail to start after system reboot(tmp dirs disappear);
