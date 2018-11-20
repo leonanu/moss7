@@ -1,9 +1,18 @@
 #!/bin/bash
 
+## change YUM repo
+if ! grep '^CH_YUM' ${INST_LOG} > /dev/null 2>&1 ;then
+    if [ ${CHANGE_YUM} -eq 1 2>/dev/null ]; then
+        mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.ori
+        install -m 0644 ${TOP_DIR}/conf/yum/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo
+        yum clean all
+        ## log installed tag
+        echo 'CH_YUM' >> ${INST_LOG}
+    fi
+fi
+
 ## install EPEL repo
 if ! grep '^ADD_EPEL' ${INST_LOG} > /dev/null 2>&1 ;then
-    rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-    mv /etc/yum.repos.d/epel.repo /etc/yum.repos.d/epel.repo.ori
     install -m 0644 ${TOP_DIR}/conf/yum/epel.repo /etc/yum.repos.d/epel.repo
     yum clean all
     ## log installed tag

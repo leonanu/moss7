@@ -1,33 +1,23 @@
 [epel]
 name=Extra Packages for Enterprise Linux 7 - $basearch
-baseurl=http://mirrors.aliyun.com/epel/$releasever/$basearch
-        http://mirrors.sohu.com/fedora-epel/$releasever/$basearch
-        http://mirrors.yun-idc.com/epel/$releasever/$basearch
-        http://mirror.bit.edu.cn/fedora/epel/$releasever/$basearch
-        http://mirrors.ustc.edu.cn/epel/$releasever/$basearch
-#mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=epel-7&arch=$basearch
+baseurl=http://mirrors.aliyun.com/epel/7/$basearch
 failovermethod=priority
 enabled=1
-gpgcheck=1
+gpgcheck=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
-priority=3
-
+ 
 [epel-debuginfo]
 name=Extra Packages for Enterprise Linux 7 - $basearch - Debug
-baseurl=http://mirrors.aliyun.com/epel/$releasever/$basearch/debug
-        http://mirrors.yun-idc.com/epel/$releasever/$basearch/debug
-        http://mirrors.ustc.edu.cn/epel/$releasever/$basearch/debug
-#mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=epel-debug-7&arch=$basearch
+baseurl=http://mirrors.aliyun.com/epel/7/$basearch/debug
 failovermethod=priority
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
-gpgcheck=1
-
+gpgcheck=0
+ 
 [epel-source]
 name=Extra Packages for Enterprise Linux 7 - $basearch - Source
-#baseurl=http://download.fedoraproject.org/pub/epel/7/SRPMS
-mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=epel-source-7&arch=$basearch
+baseurl=http://mirrors.aliyun.com/epel/7/SRPMS
 failovermethod=priority
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
-gpgcheck=1
+gpgcheck=0
