@@ -35,8 +35,6 @@ if ! grep '^NGINX$' ${INST_LOG} > /dev/null 2>&1 ;then
     --with-http_gzip_static_module \
     --with-http_auth_request_module \
     --with-http_stub_status_module \
-    --with-stream \
-    --with-stream_ssl_module \
     --with-pcre \
     --without-http_ssi_module \
     --without-http_geo_module \
