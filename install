@@ -47,7 +47,7 @@ source ${TOP_DIR}/common/functions.sh
 
 ## Check OS
 [ "${OS_ISSUE}" != 'CentOS' ] && fail_msg "Moss7 can be installed on CentOS release only!\nYour release is ${OS_ISSUE}"
-[ "${OS_VER}" -ne 7 ] && fail_msg "Moss7 could run on CentOS 7 only!\nYour release is ${OS_ISSUE}"
+[ "${OS_VER}" -ne 7 ] && fail_msg "Moss7 could run on CentOS 7 only!\nYour version is ${OS_VER}"
 
 ## Check Moss7 Configuration File
 if [ ! -f "${TOP_DIR}/etc/moss.conf" ];then
@@ -77,6 +77,11 @@ warn_msg "q - Quit Installation;"
 warn_msg "================================================\n"
 MOSS_OPT=1
 read -p "Select an Install Option:" MOSS_OPT
+
+if [ ${MOSS_OPT} = 'q' ];then
+    succ_msg "\nQuit Installation.\n"
+    exit 0
+fi
 
 ## Import Moss7 Settings
 source ${TOP_DIR}/etc/moss.conf 2>/dev/null
@@ -194,9 +199,6 @@ case "${MOSS_OPT}" in
         ;;
     u) # Uninstall
         uninstall
-        ;;
-    q) # Quit
-        exit 0
         ;;
     *) # Invalid
        fail_msg "You specifid an invalid option!\n"

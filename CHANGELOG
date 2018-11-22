@@ -17,6 +17,7 @@ Note:
 =====
 YYYY-MM-DD
 * Update Nginx compile instruction.
+* Fix installation interface minor bug.
 
 
 1.0.1
