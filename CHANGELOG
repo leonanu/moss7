@@ -16,8 +16,10 @@ Note:
 1.0.2
 =====
 YYYY-MM-DD
-* Update Nginx compile instruction.
-* Fix installation interface minor bug.
+* Update Nginx compile instruction;
+* Update /etc/security/limits.conf;
+* Fix sysctl.conf dumplicate contents;
+* Fix installation interface minor bug;
 
 
 1.0.1
