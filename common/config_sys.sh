@@ -35,7 +35,6 @@ if ! grep '^SET_RESOLV' ${INST_LOG} > /dev/null 2>&1 ;then
     if ! grep 'timeout' /etc/resolv.conf > /dev/null 2>&1 ;then
         sed -i '1i\options timeout:1 attempts:1 rotate' /etc/resolv.conf
     fi
-    systemctl restart NetworkManager.service
     ## log installed tag
     echo 'SET_RESOLV' >> ${INST_LOG}
 fi
@@ -261,7 +260,7 @@ if ! grep '^SYS_SERVICE' ${INST_LOG} > /dev/null 2>&1 ;then
         systemctl start ${SVC_ON} 2>/dev/null
     done
 
-    for SVC_OFF in NetworkManager.service firewalld.service iptables.service ip6tables.service;do
+    for SVC_OFF in NetworkManager.service firewalld.service iptables.service ip6tables.service postfix.service;do
         systemctl disable ${SVC_OFF} 2>/dev/null
         systemctl stop  ${SVC_OFF} stop 2>/dev/null
     done
