@@ -35,7 +35,7 @@ if ! grep '^MYSQL$' ${INST_LOG} > /dev/null 2>&1 ; then
     succ_msg "Begin to install ${SRC_DIR} config files"
 
     ## log
-    [ ! -d /var/local/mysql ] && mkdir -m 0755 -p /var/log/mysql
+    [ ! -d /var/log/mysql ] && mkdir -m 0755 -p /var/log/mysql
     [ ! -d /usr/local/etc/logrotate ] && mkdir -m 0755 -p /usr/local/etc/logrotate
     chown mysql:mysql -R /var/log/mysql
     install -m 0644 ${TOP_DIR}/conf/mysql/mysql.logrotate /usr/local/etc/logrotate/mysql
