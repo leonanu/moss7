@@ -28,6 +28,8 @@ if ! grep '^NGINX$' ${INST_LOG} > /dev/null 2>&1 ;then
     --with-file-aio \
     --with-http_ssl_module \
     --with-http_v2_module \
+    --with-http_flv_module \
+    --with-http_mp4_module \
     --with-http_realip_module \
     --with-http_addition_module \
     --with-http_image_filter_module \
@@ -36,6 +38,10 @@ if ! grep '^NGINX$' ${INST_LOG} > /dev/null 2>&1 ;then
     --with-http_auth_request_module \
     --with-http_stub_status_module \
     --with-pcre \
+    --with-stream \
+    --with-stream_ssl_module \
+    --with-stream_realip_module \
+    --with-stream_ssl_preread_module \
     --without-http_ssi_module \
     --without-http_geo_module \
     --without-http_scgi_module \
